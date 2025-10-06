@@ -1,0 +1,9 @@
+org/amcp/core/Event.class
+org/amcp/core/Event$Builder.class
+org/amcp/core/package-info.class
+org/amcp/core/AgentState.class
+org/amcp/core/Agent.class
+org/amcp/core/EventPriority.class
+org/amcp/core/AgentActivationException.class
+org/amcp/core/AgentContext.class
+org/amcp/core/AgentDeactivationException.class
