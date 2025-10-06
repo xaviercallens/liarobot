@@ -36,21 +36,67 @@ public interface AgentContext {
     void unsubscribe(Agent agent, String topic);
     
     /**
+     * Publishes an event to the mesh (alias for publish).
+     * 
+     * @param event the event to publish
+     */
+    default void publishEvent(Event event) {
+        publish(event);
+    }
+    
+    /**
+     * Subscribes an agent to a topic pattern.
+     * 
+     * @param agentId the agent ID to subscribe
+     * @param topicPattern the topic pattern to subscribe to
+     */
+    void subscribeToTopic(String agentId, String topicPattern);
+    
+    /**
+     * Unsubscribes an agent from a topic pattern.
+     * 
+     * @param agentId the agent ID to unsubscribe
+     * @param topicPattern the topic pattern to unsubscribe from
+     */
+    void unsubscribeFromTopic(String agentId, String topicPattern);
+    
+    /**
+     * Registers an agent in the mesh.
+     * 
+     * @param agentId the agent ID
+     * @param agentType the agent type
+     */
+    void registerAgent(String agentId, String agentType);
+    
+    /**
+     * Unregisters an agent from the mesh.
+     * 
+     * @param agentId the agent ID
+     */
+    void unregisterAgent(String agentId);
+    
+    /**
      * Activates an agent in the mesh.
      * 
      * @param agent the agent to activate
      */
-    void activateAgent(Agent agent);
+    default void activateAgent(Agent agent) {
+        registerAgent(agent.getId(), agent.getType());
+    }
     
     /**
      * Deactivates an agent from the mesh.
      * 
      * @param agent the agent to deactivate
      */
-    void deactivateAgent(Agent agent);
+    default void deactivateAgent(Agent agent) {
+        unregisterAgent(agent.getId());
+    }
     
     /**
      * Shuts down the agent context.
      */
-    void shutdown();
+    default void shutdown() {
+        // Default implementation does nothing
+    }
 }

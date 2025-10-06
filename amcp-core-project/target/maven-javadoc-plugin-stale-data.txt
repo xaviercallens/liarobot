@@ -1,0 +1,57 @@
+@options
+@packages
+-classpath
+'/home/kalxav/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.2/jackson-databind-2.15.2.jar:/home/kalxav/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.2/jackson-annotations-2.15.2.jar:/home/kalxav/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.2/jackson-core-2.15.2.jar:/home/kalxav/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.15.2/jackson-datatype-jsr310-2.15.2.jar:/home/kalxav/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'17'
+-sourcepath
+'/home/kalxav/CascadeProjects/amcp-core-project/src/main/java:/home/kalxav/CascadeProjects/amcp-core-project/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2025. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs'
+-docencoding
+'UTF-8'
+-Xdoclint:none
+-doctitle
+'AMCP Core 1.5.0 API'
+-use
+-version
+-windowtitle
+'AMCP Core 1.5.0 API'
+org.amcp.core
+org.amcp.demo
+org.amcp.cli
+/home/kalxav/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.2/jackson-databind-2.15.2.jar = 1759567463165
+/home/kalxav/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.2/jackson-annotations-2.15.2.jar = 1759567463169
+/home/kalxav/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.2/jackson-core-2.15.2.jar = 1759567463128
+/home/kalxav/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.15.2/jackson-datatype-jsr310-2.15.2.jar = 1759567463162
+/home/kalxav/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar = 1759567463057
+/home/kalxav/CascadeProjects/amcp-core-project/src/main/java = 1759778804589
+/home/kalxav/CascadeProjects/amcp-core-project/target/generated-sources/annotations = 1759783683400
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/element-list = 1759783688130
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/overview-tree.html = 1759783688205
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/index.html = 1759783688207
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/allclasses-index.html = 1759783688224
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/allpackages-index.html = 1759783688226
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/module-search-index.js = 1759783688227
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/package-search-index.js = 1759783688227
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/type-search-index.js = 1759783688227
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/member-search-index.js = 1759783688227
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/tag-search-index.js = 1759783688228
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/index-all.html = 1759783688251
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/search.html = 1759783688253
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/overview-summary.html = 1759783688256
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/help-doc.html = 1759783688259
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/stylesheet.css = 1759783688261
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/script.js = 1759783688261
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/copy.svg = 1759783688261
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/link.svg = 1759783688262
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/search.js = 1759783688263
+/home/kalxav/CascadeProjects/amcp-core-project/target/apidocs/search-page.js = 1759783688264

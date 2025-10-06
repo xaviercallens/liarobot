@@ -117,6 +117,24 @@ public final class Event {
     }
     
     /**
+     * Gets the source of this event (alias for getSender).
+     * 
+     * @return the source agent ID
+     */
+    public String getSource() {
+        return sender;
+    }
+    
+    /**
+     * Gets the target of this event from metadata.
+     * 
+     * @return the target agent ID, or null if not specified
+     */
+    public String getTarget() {
+        return metadata.get("target");
+    }
+    
+    /**
      * Gets the correlation ID of this event.
      * 
      * @return the correlation ID
@@ -242,6 +260,16 @@ public final class Event {
             return this;
         }
         
+        public Builder source(String source) {
+            this.sender = source;
+            return this;
+        }
+        
+        public Builder target(String target) {
+            this.metadata.put("target", target);
+            return this;
+        }
+        
         public Builder correlationId(String correlationId) {
             this.correlationId = correlationId;
             return this;
@@ -286,12 +314,3 @@ public final class Event {
     }
 }
 
-/**
- * Enumeration of event priorities.
- */
-enum EventPriority {
-    LOW,
-    NORMAL,
-    HIGH,
-    CRITICAL
-}

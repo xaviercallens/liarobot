@@ -209,7 +209,7 @@ public abstract class Agent {
      * 
      * @param event the event to publish
      */
-    protected final void publish(Event event) {
+    public final void publish(Event event) {
         Objects.requireNonNull(event, "Event cannot be null");
         
         if (context == null) {
@@ -328,6 +328,55 @@ public abstract class Agent {
      */
     public final Instant getLastActivityTime() {
         return lastActivityTime;
+    }
+    
+    /**
+     * Handles an incoming event. Called by the AMCP framework.
+     * 
+     * @param event the event to handle
+     */
+    public final void handleEvent(Event event) {
+        if (state != AgentState.ACTIVE) {
+            logger.warn("Agent {} received event while not active: {}", agentId, state);
+            return;
+        }
+        
+        lastActivityTime = Instant.now();
+        
+        try {
+            onEventReceived(event);
+        } catch (Exception e) {
+            logger.error("Error handling event in agent {}: {}", agentId, e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Called when an event is received by this agent.
+     * 
+     * Subclasses should override this method to handle incoming events.
+     * 
+     * @param event the received event
+     */
+    protected void onEventReceived(Event event) {
+        // Default implementation does nothing
+    }
+    
+    /**
+     * Convenience method to get agent ID (alias for getAgentId).
+     * 
+     * @return the agent ID
+     */
+    public final String getId() {
+        return agentId;
+    }
+    
+    /**
+     * Convenience method to get agent type (alias for getAgentType).
+     * 
+     * @return the agent type
+     */
+    public final String getType() {
+        return agentType;
     }
     
     @Override

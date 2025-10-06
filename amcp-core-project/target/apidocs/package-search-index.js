@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.amcp.cli"},{"l":"org.amcp.core"},{"l":"org.amcp.demo"}];updateSearchResults();
