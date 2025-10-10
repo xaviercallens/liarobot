@@ -1,1 +1,0 @@
-tagSearchIndex = [{"l":"Basic Usage","h":"package org.amcp.core","d":"Section","u":"org/amcp/core/package-summary.html#basic-usage-heading"},{"l":"Key Components","h":"package org.amcp.core","d":"Section","u":"org/amcp/core/package-summary.html#key-components-heading"}];updateSearchResults();

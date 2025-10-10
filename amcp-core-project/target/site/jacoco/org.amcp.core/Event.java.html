@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Event.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">AMCP Core</a> &gt; <a href="index.source.html" class="el_package">org.amcp.core</a> &gt; <span class="el_source">Event.java</span></div><h1>Event.java</h1><pre class="source lang-java linenums">package org.amcp.core;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
+/**
+ * Represents an event in the AMCP mesh.
+ * 
+ * Events are the primary means of communication between agents.
+ * They contain a topic, payload, and metadata for routing and processing.
+ * 
+ * @author AMCP Development Team
+ * @version 1.5.0
+ * @since 1.0.0
+ */
+public final class Event {
+    
+<span class="fc" id="L25">    private static final ObjectMapper objectMapper = new ObjectMapper();</span>
+    
+    private final String id;
+    private final String topic;
+    private final Object payload;
+    private final String sender;
+    private final String correlationId;
+    private final Instant timestamp;
+    private final Map&lt;String, String&gt; metadata;
+    private final EventPriority priority;
+    
+    @JsonCreator
+    private Event(
+            @JsonProperty(&quot;id&quot;) String id,
+            @JsonProperty(&quot;topic&quot;) String topic,
+            @JsonProperty(&quot;payload&quot;) Object payload,
+            @JsonProperty(&quot;sender&quot;) String sender,
+            @JsonProperty(&quot;correlationId&quot;) String correlationId,
+            @JsonProperty(&quot;timestamp&quot;) Instant timestamp,
+            @JsonProperty(&quot;metadata&quot;) Map&lt;String, String&gt; metadata,
+<span class="fc" id="L45">            @JsonProperty(&quot;priority&quot;) EventPriority priority) {</span>
+        
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        this.id = id != null ? id : UUID.randomUUID().toString();</span>
+<span class="fc" id="L48">        this.topic = Objects.requireNonNull(topic, &quot;Topic cannot be null&quot;);</span>
+<span class="fc" id="L49">        this.payload = payload;</span>
+<span class="fc" id="L50">        this.sender = sender;</span>
+<span class="fc" id="L51">        this.correlationId = correlationId;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        this.timestamp = timestamp != null ? timestamp : Instant.now();</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        this.metadata = metadata != null ? new HashMap&lt;&gt;(metadata) : new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        this.priority = priority != null ? priority : EventPriority.NORMAL;</span>
+<span class="fc" id="L55">    }</span>
+    
+    /**
+     * Gets the unique identifier of this event.
+     * 
+     * @return the event ID
+     */
+    public String getId() {
+<span class="fc" id="L63">        return id;</span>
+    }
+    
+    /**
+     * Gets the topic of this event.
+     * 
+     * @return the topic
+     */
+    public String getTopic() {
+<span class="fc" id="L72">        return topic;</span>
+    }
+    
+    /**
+     * Gets the payload of this event.
+     * 
+     * @return the payload
+     */
+    public Object getPayload() {
+<span class="fc" id="L81">        return payload;</span>
+    }
+    
+    /**
+     * Gets the payload as the specified type.
+     * 
+     * @param &lt;T&gt; the payload type
+     * @param type the payload class
+     * @return the payload cast to the specified type
+     * @throws ClassCastException if the payload cannot be cast to the specified type
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public &lt;T&gt; T getPayload(Class&lt;T&gt; type) {
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (payload == null) {</span>
+<span class="nc" id="L95">            return null;</span>
+        }
+        
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (type.isInstance(payload)) {</span>
+<span class="fc" id="L99">            return (T) payload;</span>
+        }
+        
+        // Try to convert using Jackson
+        try {
+<span class="nc" id="L104">            return objectMapper.convertValue(payload, type);</span>
+<span class="nc" id="L105">        } catch (Exception e) {</span>
+<span class="nc" id="L106">            throw new ClassCastException(&quot;Cannot convert payload to &quot; + type.getSimpleName() + &quot;: &quot; + e.getMessage());</span>
+        }
+    }
+    
+    /**
+     * Gets the sender of this event.
+     * 
+     * @return the sender agent ID
+     */
+    public String getSender() {
+<span class="fc" id="L116">        return sender;</span>
+    }
+    
+    /**
+     * Gets the source of this event (alias for getSender).
+     * 
+     * @return the source agent ID
+     */
+    public String getSource() {
+<span class="nc" id="L125">        return sender;</span>
+    }
+    
+    /**
+     * Gets the target of this event from metadata.
+     * 
+     * @return the target agent ID, or null if not specified
+     */
+    public String getTarget() {
+<span class="nc" id="L134">        return metadata.get(&quot;target&quot;);</span>
+    }
+    
+    /**
+     * Gets the correlation ID of this event.
+     * 
+     * @return the correlation ID
+     */
+    public String getCorrelationId() {
+<span class="nc" id="L143">        return correlationId;</span>
+    }
+    
+    /**
+     * Gets the timestamp of this event.
+     * 
+     * @return the timestamp
+     */
+    public Instant getTimestamp() {
+<span class="fc" id="L152">        return timestamp;</span>
+    }
+    
+    /**
+     * Gets the metadata of this event.
+     * 
+     * @return a copy of the metadata map
+     */
+    public Map&lt;String, String&gt; getMetadata() {
+<span class="fc" id="L161">        return new HashMap&lt;&gt;(metadata);</span>
+    }
+    
+    /**
+     * Gets a metadata value.
+     * 
+     * @param key the metadata key
+     * @return the metadata value, or null if not found
+     */
+    public String getMetadata(String key) {
+<span class="fc" id="L171">        return metadata.get(key);</span>
+    }
+    
+    /**
+     * Gets the priority of this event.
+     * 
+     * @return the priority
+     */
+    public EventPriority getPriority() {
+<span class="fc" id="L180">        return priority;</span>
+    }
+    
+    /**
+     * Creates a new builder for constructing events.
+     * 
+     * @return a new event builder
+     */
+    public static Builder builder() {
+<span class="fc" id="L189">        return new Builder();</span>
+    }
+    
+    /**
+     * Creates a new builder initialized with this event's values.
+     * 
+     * @return a new event builder
+     */
+    public Builder toBuilder() {
+<span class="fc" id="L198">        return new Builder()</span>
+<span class="fc" id="L199">            .id(id)</span>
+<span class="fc" id="L200">            .topic(topic)</span>
+<span class="fc" id="L201">            .payload(payload)</span>
+<span class="fc" id="L202">            .sender(sender)</span>
+<span class="fc" id="L203">            .correlationId(correlationId)</span>
+<span class="fc" id="L204">            .timestamp(timestamp)</span>
+<span class="fc" id="L205">            .metadata(metadata)</span>
+<span class="fc" id="L206">            .priority(priority);</span>
+    }
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L211">        return String.format(&quot;Event{id='%s', topic='%s', sender='%s', timestamp=%s}&quot;, </span>
+            id, topic, sender, timestamp);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        if (this == obj) return true;</span>
+<span class="pc bpc" id="L218" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) return false;</span>
+<span class="fc" id="L219">        Event event = (Event) obj;</span>
+<span class="fc" id="L220">        return Objects.equals(id, event.id);</span>
+    }
+    
+    @Override
+    public int hashCode() {
+<span class="fc" id="L225">        return Objects.hash(id);</span>
+    }
+    
+    /**
+     * Builder for constructing Event instances.
+     */
+    public static final class Builder {
+        private String id;
+        private String topic;
+        private Object payload;
+        private String sender;
+        private String correlationId;
+        private Instant timestamp;
+<span class="fc" id="L238">        private Map&lt;String, String&gt; metadata = new HashMap&lt;&gt;();</span>
+        private EventPriority priority;
+        
+<span class="fc" id="L241">        private Builder() {}</span>
+        
+        public Builder id(String id) {
+<span class="fc" id="L244">            this.id = id;</span>
+<span class="fc" id="L245">            return this;</span>
+        }
+        
+        public Builder topic(String topic) {
+<span class="fc" id="L249">            this.topic = topic;</span>
+<span class="fc" id="L250">            return this;</span>
+        }
+        
+        public Builder payload(Object payload) {
+<span class="fc" id="L254">            this.payload = payload;</span>
+<span class="fc" id="L255">            return this;</span>
+        }
+        
+        public Builder sender(String sender) {
+<span class="fc" id="L259">            this.sender = sender;</span>
+<span class="fc" id="L260">            return this;</span>
+        }
+        
+        public Builder source(String source) {
+<span class="nc" id="L264">            this.sender = source;</span>
+<span class="nc" id="L265">            return this;</span>
+        }
+        
+        public Builder target(String target) {
+<span class="nc" id="L269">            this.metadata.put(&quot;target&quot;, target);</span>
+<span class="nc" id="L270">            return this;</span>
+        }
+        
+        public Builder correlationId(String correlationId) {
+<span class="fc" id="L274">            this.correlationId = correlationId;</span>
+<span class="fc" id="L275">            return this;</span>
+        }
+        
+        public Builder timestamp(Instant timestamp) {
+<span class="fc" id="L279">            this.timestamp = timestamp;</span>
+<span class="fc" id="L280">            return this;</span>
+        }
+        
+        public Builder metadata(String key, String value) {
+<span class="fc" id="L284">            this.metadata.put(key, value);</span>
+<span class="fc" id="L285">            return this;</span>
+        }
+        
+        public Builder metadata(Map&lt;String, String&gt; metadata) {
+<span class="fc" id="L289">            this.metadata.putAll(metadata);</span>
+<span class="fc" id="L290">            return this;</span>
+        }
+        
+        public Builder priority(EventPriority priority) {
+<span class="fc" id="L294">            this.priority = priority;</span>
+<span class="fc" id="L295">            return this;</span>
+        }
+        
+        public Builder from(Event event) {
+<span class="nc" id="L299">            this.id = event.id;</span>
+<span class="nc" id="L300">            this.topic = event.topic;</span>
+<span class="nc" id="L301">            this.payload = event.payload;</span>
+<span class="nc" id="L302">            this.sender = event.sender;</span>
+<span class="nc" id="L303">            this.correlationId = event.correlationId;</span>
+<span class="nc" id="L304">            this.timestamp = event.timestamp;</span>
+<span class="nc" id="L305">            this.metadata.putAll(event.metadata);</span>
+<span class="nc" id="L306">            this.priority = event.priority;</span>
+<span class="nc" id="L307">            return this;</span>
+        }
+        
+        public Event build() {
+<span class="fc" id="L311">            return new Event(id, topic, payload, sender, correlationId, </span>
+                timestamp, metadata, priority);
+        }
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
