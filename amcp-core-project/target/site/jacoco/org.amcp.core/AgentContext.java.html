@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AgentContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">AMCP Core</a> &gt; <a href="index.source.html" class="el_package">org.amcp.core</a> &gt; <span class="el_source">AgentContext.java</span></div><h1>AgentContext.java</h1><pre class="source lang-java linenums">package org.amcp.core;
+
+/**
+ * Interface for agent context within the AMCP mesh.
+ * 
+ * Provides methods for agents to interact with the mesh,
+ * including publishing events and managing subscriptions.
+ * 
+ * @author AMCP Development Team
+ * @version 1.5.0
+ * @since 1.0.0
+ */
+public interface AgentContext {
+    
+    /**
+     * Publishes an event to the mesh.
+     * 
+     * @param event the event to publish
+     */
+    void publish(Event event);
+    
+    /**
+     * Subscribes an agent to a topic.
+     * 
+     * @param agent the agent to subscribe
+     * @param topic the topic to subscribe to
+     */
+    void subscribe(Agent agent, String topic);
+    
+    /**
+     * Unsubscribes an agent from a topic.
+     * 
+     * @param agent the agent to unsubscribe
+     * @param topic the topic to unsubscribe from
+     */
+    void unsubscribe(Agent agent, String topic);
+    
+    /**
+     * Publishes an event to the mesh (alias for publish).
+     * 
+     * @param event the event to publish
+     */
+    default void publishEvent(Event event) {
+<span class="nc" id="L44">        publish(event);</span>
+<span class="nc" id="L45">    }</span>
+    
+    /**
+     * Subscribes an agent to a topic pattern.
+     * 
+     * @param agentId the agent ID to subscribe
+     * @param topicPattern the topic pattern to subscribe to
+     */
+    void subscribeToTopic(String agentId, String topicPattern);
+    
+    /**
+     * Unsubscribes an agent from a topic pattern.
+     * 
+     * @param agentId the agent ID to unsubscribe
+     * @param topicPattern the topic pattern to unsubscribe from
+     */
+    void unsubscribeFromTopic(String agentId, String topicPattern);
+    
+    /**
+     * Registers an agent in the mesh.
+     * 
+     * @param agentId the agent ID
+     * @param agentType the agent type
+     */
+    void registerAgent(String agentId, String agentType);
+    
+    /**
+     * Unregisters an agent from the mesh.
+     * 
+     * @param agentId the agent ID
+     */
+    void unregisterAgent(String agentId);
+    
+    /**
+     * Activates an agent in the mesh.
+     * 
+     * @param agent the agent to activate
+     */
+    default void activateAgent(Agent agent) {
+<span class="nc" id="L84">        registerAgent(agent.getId(), agent.getType());</span>
+<span class="nc" id="L85">    }</span>
+    
+    /**
+     * Deactivates an agent from the mesh.
+     * 
+     * @param agent the agent to deactivate
+     */
+    default void deactivateAgent(Agent agent) {
+<span class="nc" id="L93">        unregisterAgent(agent.getId());</span>
+<span class="nc" id="L94">    }</span>
+    
+    /**
+     * Shuts down the agent context.
+     */
+    default void shutdown() {
+        // Default implementation does nothing
+<span class="nc" id="L101">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

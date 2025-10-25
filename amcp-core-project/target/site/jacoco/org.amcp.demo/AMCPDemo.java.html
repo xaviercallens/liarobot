@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AMCPDemo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">AMCP Core</a> &gt; <a href="index.source.html" class="el_package">org.amcp.demo</a> &gt; <span class="el_source">AMCPDemo.java</span></div><h1>AMCPDemo.java</h1><pre class="source lang-java linenums">package org.amcp.demo;
+
+import org.amcp.core.Agent;
+import org.amcp.core.AgentContext;
+import org.amcp.core.Event;
+import org.amcp.core.EventPriority;
+
+import java.time.Instant;
+import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.List;
+
+/**
+ * Interactive CLI demo for AMCP Core framework.
+ * Demonstrates agent creation, event publishing, and mesh communication.
+ */
+<span class="nc" id="L19">public class AMCPDemo {</span>
+    
+<span class="nc" id="L21">    private static final Map&lt;String, DemoAgent&gt; agents = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="nc" id="L22">    private static final List&lt;Event&gt; eventLog = new CopyOnWriteArrayList&lt;&gt;();</span>
+<span class="nc" id="L23">    private static final Scanner scanner = new Scanner(System.in);</span>
+    
+    public static void main(String[] args) {
+<span class="nc" id="L26">        System.out.println(&quot;🚀 AMCP Core v1.5.0 - Interactive Demo&quot;);</span>
+<span class="nc" id="L27">        System.out.println(&quot;=====================================&quot;);</span>
+<span class="nc" id="L28">        System.out.println();</span>
+        
+        // Create demo context
+<span class="nc" id="L31">        DemoAgentContext context = new DemoAgentContext();</span>
+        
+        // Create some demo agents
+<span class="nc" id="L34">        createDemoAgents(context);</span>
+        
+        // Start interactive loop
+<span class="nc" id="L37">        runInteractiveDemo();</span>
+<span class="nc" id="L38">    }</span>
+    
+    private static void createDemoAgents(DemoAgentContext context) {
+<span class="nc" id="L41">        System.out.println(&quot;📦 Creating demo agents...&quot;);</span>
+        
+        // Create different types of agents
+<span class="nc" id="L44">        DemoAgent chatAgent = new DemoAgent(&quot;chat-001&quot;, &quot;ChatAgent&quot;, context);</span>
+<span class="nc" id="L45">        DemoAgent dataAgent = new DemoAgent(&quot;data-001&quot;, &quot;DataAgent&quot;, context);</span>
+<span class="nc" id="L46">        DemoAgent monitorAgent = new DemoAgent(&quot;monitor-001&quot;, &quot;MonitorAgent&quot;, context);</span>
+        
+<span class="nc" id="L48">        agents.put(chatAgent.getId(), chatAgent);</span>
+<span class="nc" id="L49">        agents.put(dataAgent.getId(), dataAgent);</span>
+<span class="nc" id="L50">        agents.put(monitorAgent.getId(), monitorAgent);</span>
+        
+        // Activate all agents
+        try {
+<span class="nc" id="L54">            chatAgent.activate();</span>
+<span class="nc" id="L55">            dataAgent.activate();</span>
+<span class="nc" id="L56">            monitorAgent.activate();</span>
+            
+<span class="nc" id="L58">            System.out.println(&quot;✅ Created and activated &quot; + agents.size() + &quot; demo agents&quot;);</span>
+<span class="nc" id="L59">            System.out.println();</span>
+<span class="nc" id="L60">        } catch (Exception e) {</span>
+<span class="nc" id="L61">            System.err.println(&quot;❌ Error activating agents: &quot; + e.getMessage());</span>
+<span class="nc" id="L62">        }</span>
+<span class="nc" id="L63">    }</span>
+    
+    private static void runInteractiveDemo() {
+<span class="nc" id="L66">        System.out.println(&quot;🎮 Interactive Demo Commands:&quot;);</span>
+<span class="nc" id="L67">        System.out.println(&quot;  1. list    - List all agents&quot;);</span>
+<span class="nc" id="L68">        System.out.println(&quot;  2. send    - Send event between agents&quot;);</span>
+<span class="nc" id="L69">        System.out.println(&quot;  3. status  - Show agent status&quot;);</span>
+<span class="nc" id="L70">        System.out.println(&quot;  4. events  - Show event log&quot;);</span>
+<span class="nc" id="L71">        System.out.println(&quot;  5. create  - Create new agent&quot;);</span>
+<span class="nc" id="L72">        System.out.println(&quot;  6. help    - Show this help&quot;);</span>
+<span class="nc" id="L73">        System.out.println(&quot;  7. quit    - Exit demo&quot;);</span>
+<span class="nc" id="L74">        System.out.println();</span>
+        
+        while (true) {
+<span class="nc" id="L77">            System.out.print(&quot;amcp&gt; &quot;);</span>
+<span class="nc" id="L78">            String command = scanner.nextLine().trim().toLowerCase();</span>
+            
+<span class="nc bnc" id="L80" title="All 8 branches missed.">            switch (command) {</span>
+                case &quot;1&quot;:
+                case &quot;list&quot;:
+<span class="nc" id="L83">                    listAgents();</span>
+<span class="nc" id="L84">                    break;</span>
+                case &quot;2&quot;:
+                case &quot;send&quot;:
+<span class="nc" id="L87">                    sendEvent();</span>
+<span class="nc" id="L88">                    break;</span>
+                case &quot;3&quot;:
+                case &quot;status&quot;:
+<span class="nc" id="L91">                    showStatus();</span>
+<span class="nc" id="L92">                    break;</span>
+                case &quot;4&quot;:
+                case &quot;events&quot;:
+<span class="nc" id="L95">                    showEvents();</span>
+<span class="nc" id="L96">                    break;</span>
+                case &quot;5&quot;:
+                case &quot;create&quot;:
+<span class="nc" id="L99">                    createAgent();</span>
+<span class="nc" id="L100">                    break;</span>
+                case &quot;6&quot;:
+                case &quot;help&quot;:
+<span class="nc" id="L103">                    runInteractiveDemo();</span>
+<span class="nc" id="L104">                    return;</span>
+                case &quot;7&quot;:
+                case &quot;quit&quot;:
+                case &quot;exit&quot;:
+<span class="nc" id="L108">                    shutdown();</span>
+<span class="nc" id="L109">                    return;</span>
+                default:
+<span class="nc" id="L111">                    System.out.println(&quot;❓ Unknown command. Type 'help' for available commands.&quot;);</span>
+            }
+<span class="nc" id="L113">            System.out.println();</span>
+<span class="nc" id="L114">        }</span>
+    }
+    
+    private static void listAgents() {
+<span class="nc" id="L118">        System.out.println(&quot;📋 Active Agents:&quot;);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (agents.isEmpty()) {</span>
+<span class="nc" id="L120">            System.out.println(&quot;  No agents currently active&quot;);</span>
+<span class="nc" id="L121">            return;</span>
+        }
+        
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        for (DemoAgent agent : agents.values()) {</span>
+<span class="nc" id="L125">            System.out.printf(&quot;  🤖 %s (%s) - %s%n&quot;, </span>
+<span class="nc" id="L126">                agent.getId(), </span>
+<span class="nc" id="L127">                agent.getType(), </span>
+<span class="nc" id="L128">                agent.getState());</span>
+<span class="nc" id="L129">        }</span>
+<span class="nc" id="L130">    }</span>
+    
+    private static void sendEvent() {
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (agents.size() &lt; 2) {</span>
+<span class="nc" id="L134">            System.out.println(&quot;❌ Need at least 2 agents to send events&quot;);</span>
+<span class="nc" id="L135">            return;</span>
+        }
+        
+<span class="nc" id="L138">        System.out.println(&quot;📡 Send Event:&quot;);</span>
+<span class="nc" id="L139">        System.out.print(&quot;From agent ID: &quot;);</span>
+<span class="nc" id="L140">        String fromId = scanner.nextLine().trim();</span>
+        
+<span class="nc" id="L142">        System.out.print(&quot;To agent ID (or 'broadcast'): &quot;);</span>
+<span class="nc" id="L143">        String toId = scanner.nextLine().trim();</span>
+        
+<span class="nc" id="L145">        System.out.print(&quot;Event topic: &quot;);</span>
+<span class="nc" id="L146">        String topic = scanner.nextLine().trim();</span>
+        
+<span class="nc" id="L148">        System.out.print(&quot;Message: &quot;);</span>
+<span class="nc" id="L149">        String message = scanner.nextLine().trim();</span>
+        
+<span class="nc" id="L151">        DemoAgent fromAgent = agents.get(fromId);</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (fromAgent == null) {</span>
+<span class="nc" id="L153">            System.out.println(&quot;❌ Agent not found: &quot; + fromId);</span>
+<span class="nc" id="L154">            return;</span>
+        }
+        
+        try {
+<span class="nc" id="L158">            Event event = Event.builder()</span>
+<span class="nc" id="L159">                .topic(topic)</span>
+<span class="nc" id="L160">                .payload(message)</span>
+<span class="nc" id="L161">                .source(fromId)</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                .target(&quot;broadcast&quot;.equals(toId) ? null : toId)</span>
+<span class="nc" id="L163">                .priority(EventPriority.NORMAL)</span>
+<span class="nc" id="L164">                .build();</span>
+            
+<span class="nc" id="L166">            fromAgent.publish(event);</span>
+<span class="nc" id="L167">            System.out.println(&quot;✅ Event sent successfully!&quot;);</span>
+            
+<span class="nc" id="L169">        } catch (Exception e) {</span>
+<span class="nc" id="L170">            System.out.println(&quot;❌ Error sending event: &quot; + e.getMessage());</span>
+<span class="nc" id="L171">        }</span>
+<span class="nc" id="L172">    }</span>
+    
+    private static void showStatus() {
+<span class="nc" id="L175">        System.out.println(&quot;📊 System Status:&quot;);</span>
+<span class="nc" id="L176">        System.out.println(&quot;  Active Agents: &quot; + agents.size());</span>
+<span class="nc" id="L177">        System.out.println(&quot;  Total Events: &quot; + eventLog.size());</span>
+<span class="nc" id="L178">        System.out.println(&quot;  Uptime: &quot; + getUptime());</span>
+        
+<span class="nc" id="L180">        System.out.println(&quot;\n🤖 Agent Details:&quot;);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        for (DemoAgent agent : agents.values()) {</span>
+<span class="nc" id="L182">            System.out.printf(&quot;  %s: %s (Events: %d)%n&quot;, </span>
+<span class="nc" id="L183">                agent.getId(), </span>
+<span class="nc" id="L184">                agent.getState(),</span>
+<span class="nc" id="L185">                agent.getEventCount());</span>
+<span class="nc" id="L186">        }</span>
+<span class="nc" id="L187">    }</span>
+    
+    private static void showEvents() {
+<span class="nc" id="L190">        System.out.println(&quot;📝 Event Log (last 10 events):&quot;);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if (eventLog.isEmpty()) {</span>
+<span class="nc" id="L192">            System.out.println(&quot;  No events recorded&quot;);</span>
+<span class="nc" id="L193">            return;</span>
+        }
+        
+<span class="nc" id="L196">        int start = Math.max(0, eventLog.size() - 10);</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        for (int i = start; i &lt; eventLog.size(); i++) {</span>
+<span class="nc" id="L198">            Event event = eventLog.get(i);</span>
+<span class="nc" id="L199">            System.out.printf(&quot;  [%d] %s -&gt; %s: %s (%s)%n&quot;,</span>
+<span class="nc" id="L200">                i + 1,</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">                event.getSource() != null ? event.getSource() : &quot;system&quot;,</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">                event.getTarget() != null ? event.getTarget() : &quot;broadcast&quot;,</span>
+<span class="nc" id="L203">                event.getTopic(),</span>
+<span class="nc" id="L204">                event.getTimestamp());</span>
+        }
+<span class="nc" id="L206">    }</span>
+    
+    private static void createAgent() {
+<span class="nc" id="L209">        System.out.println(&quot;🏗️ Create New Agent:&quot;);</span>
+<span class="nc" id="L210">        System.out.print(&quot;Agent ID: &quot;);</span>
+<span class="nc" id="L211">        String id = scanner.nextLine().trim();</span>
+        
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        if (agents.containsKey(id)) {</span>
+<span class="nc" id="L214">            System.out.println(&quot;❌ Agent with ID '&quot; + id + &quot;' already exists&quot;);</span>
+<span class="nc" id="L215">            return;</span>
+        }
+        
+<span class="nc" id="L218">        System.out.print(&quot;Agent Type: &quot;);</span>
+<span class="nc" id="L219">        String type = scanner.nextLine().trim();</span>
+        
+        try {
+<span class="nc" id="L222">            DemoAgentContext context = new DemoAgentContext();</span>
+<span class="nc" id="L223">            DemoAgent agent = new DemoAgent(id, type, context);</span>
+<span class="nc" id="L224">            agent.activate();</span>
+            
+<span class="nc" id="L226">            agents.put(id, agent);</span>
+<span class="nc" id="L227">            System.out.println(&quot;✅ Agent created and activated: &quot; + id);</span>
+            
+<span class="nc" id="L229">        } catch (Exception e) {</span>
+<span class="nc" id="L230">            System.out.println(&quot;❌ Error creating agent: &quot; + e.getMessage());</span>
+<span class="nc" id="L231">        }</span>
+<span class="nc" id="L232">    }</span>
+    
+    private static void shutdown() {
+<span class="nc" id="L235">        System.out.println(&quot;🛑 Shutting down demo...&quot;);</span>
+        
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        for (DemoAgent agent : agents.values()) {</span>
+            try {
+<span class="nc" id="L239">                agent.deactivate();</span>
+<span class="nc" id="L240">            } catch (Exception e) {</span>
+<span class="nc" id="L241">                System.err.println(&quot;Error deactivating agent &quot; + agent.getId() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L242">            }</span>
+<span class="nc" id="L243">        }</span>
+        
+<span class="nc" id="L245">        agents.clear();</span>
+<span class="nc" id="L246">        System.out.println(&quot;✅ Demo shutdown complete. Goodbye!&quot;);</span>
+<span class="nc" id="L247">    }</span>
+    
+    private static String getUptime() {
+        // Simple uptime calculation (demo purposes)
+<span class="nc" id="L251">        return &quot;Demo session active&quot;;</span>
+    }
+    
+    /**
+     * Demo implementation of Agent with enhanced functionality
+     */
+    static class DemoAgent extends Agent {
+        private final DemoAgentContext context;
+<span class="nc" id="L259">        private int eventCount = 0;</span>
+        
+        public DemoAgent(String id, String type, DemoAgentContext context) {
+<span class="nc" id="L262">            super(id, type);</span>
+<span class="nc" id="L263">            this.context = context;</span>
+<span class="nc" id="L264">        }</span>
+        
+        @Override
+        protected void onActivation() {
+<span class="nc" id="L268">            System.out.println(&quot;🟢 Agent activated: &quot; + getId() + &quot; (&quot; + getType() + &quot;)&quot;);</span>
+            
+            // Subscribe to relevant topics
+<span class="nc" id="L271">            subscribe(getType().toLowerCase() + &quot;.*&quot;);</span>
+<span class="nc" id="L272">            subscribe(&quot;broadcast.*&quot;);</span>
+<span class="nc" id="L273">            subscribe(&quot;system.*&quot;);</span>
+<span class="nc" id="L274">        }</span>
+        
+        @Override
+        protected void onDeactivation() {
+<span class="nc" id="L278">            System.out.println(&quot;🔴 Agent deactivated: &quot; + getId());</span>
+<span class="nc" id="L279">        }</span>
+        
+        @Override
+        protected void onEventReceived(Event event) {
+<span class="nc" id="L283">            eventCount++;</span>
+<span class="nc" id="L284">            eventLog.add(event);</span>
+            
+<span class="nc" id="L286">            System.out.printf(&quot;📨 %s received: %s from %s%n&quot;, </span>
+<span class="nc" id="L287">                getId(), </span>
+<span class="nc" id="L288">                event.getTopic(),</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">                event.getSource() != null ? event.getSource() : &quot;system&quot;);</span>
+            
+            // Auto-respond to certain events
+<span class="nc bnc" id="L292" title="All 2 branches missed.">            if (event.getTopic().startsWith(&quot;ping&quot;)) {</span>
+                try {
+<span class="nc" id="L294">                    Event response = Event.builder()</span>
+<span class="nc" id="L295">                        .topic(&quot;pong.&quot; + getType().toLowerCase())</span>
+<span class="nc" id="L296">                        .payload(&quot;Pong from &quot; + getId())</span>
+<span class="nc" id="L297">                        .source(getId())</span>
+<span class="nc" id="L298">                        .target(event.getSource())</span>
+<span class="nc" id="L299">                        .correlationId(event.getId())</span>
+<span class="nc" id="L300">                        .build();</span>
+                    
+<span class="nc" id="L302">                    publish(response);</span>
+<span class="nc" id="L303">                } catch (Exception e) {</span>
+<span class="nc" id="L304">                    System.err.println(&quot;Error sending pong: &quot; + e.getMessage());</span>
+<span class="nc" id="L305">                }</span>
+            }
+<span class="nc" id="L307">        }</span>
+        
+        public int getEventCount() {
+<span class="nc" id="L310">            return eventCount;</span>
+        }
+    }
+    
+    /**
+     * Demo implementation of AgentContext
+     */
+<span class="nc" id="L317">    static class DemoAgentContext implements AgentContext {</span>
+        
+        @Override
+        public void publish(Event event) {
+<span class="nc" id="L321">            publishEvent(event);</span>
+<span class="nc" id="L322">        }</span>
+        
+        @Override
+        public void publishEvent(Event event) {
+<span class="nc" id="L326">            eventLog.add(event);</span>
+            
+            // Deliver to target agent or broadcast
+<span class="nc bnc" id="L329" title="All 2 branches missed.">            if (event.getTarget() != null) {</span>
+<span class="nc" id="L330">                DemoAgent target = agents.get(event.getTarget());</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">                if (target != null) {</span>
+<span class="nc" id="L332">                    target.handleEvent(event);</span>
+                }
+<span class="nc" id="L334">            } else {</span>
+                // Broadcast to all agents except sender
+<span class="nc bnc" id="L336" title="All 2 branches missed.">                for (DemoAgent agent : agents.values()) {</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">                    if (!agent.getId().equals(event.getSource())) {</span>
+<span class="nc" id="L338">                        agent.handleEvent(event);</span>
+                    }
+<span class="nc" id="L340">                }</span>
+            }
+<span class="nc" id="L342">        }</span>
+        
+        @Override
+        public void subscribe(Agent agent, String topic) {
+<span class="nc" id="L346">            subscribeToTopic(agent.getId(), topic);</span>
+<span class="nc" id="L347">        }</span>
+        
+        @Override
+        public void unsubscribe(Agent agent, String topic) {
+<span class="nc" id="L351">            unsubscribeFromTopic(agent.getId(), topic);</span>
+<span class="nc" id="L352">        }</span>
+        
+        @Override
+        public void subscribeToTopic(String agentId, String topicPattern) {
+<span class="nc" id="L356">            System.out.printf(&quot;📡 %s subscribed to: %s%n&quot;, agentId, topicPattern);</span>
+<span class="nc" id="L357">        }</span>
+        
+        @Override
+        public void unsubscribeFromTopic(String agentId, String topicPattern) {
+<span class="nc" id="L361">            System.out.printf(&quot;📡 %s unsubscribed from: %s%n&quot;, agentId, topicPattern);</span>
+<span class="nc" id="L362">        }</span>
+        
+        @Override
+        public void registerAgent(String agentId, String agentType) {
+<span class="nc" id="L366">            System.out.printf(&quot;📋 Agent registered: %s (%s)%n&quot;, agentId, agentType);</span>
+<span class="nc" id="L367">        }</span>
+        
+        @Override
+        public void unregisterAgent(String agentId) {
+<span class="nc" id="L371">            System.out.printf(&quot;📋 Agent unregistered: %s%n&quot;, agentId);</span>
+<span class="nc" id="L372">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

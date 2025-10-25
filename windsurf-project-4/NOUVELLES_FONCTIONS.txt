@@ -1,0 +1,231 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║     ✨ NOUVELLES FONCTIONNALITÉS - ROBOT EVE PRO ✨          ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+🎨 AMÉLIORATIONS VISUELLES
+═══════════════════════════════════════════════════════════════
+
+1. 💚 DÉGOÛT EN VERT avec arcs vers le bas
+   • Touche : D
+   • Couleur : Vert (100, 255, 100)
+   • Effet : Arcs courbés vers le bas
+   • Très visible !
+
+2. 💛 SOURIRE EN JAUNE comme des soleils
+   • Touche : L (nouvelle touche !)
+   • Couleur : Jaune soleil (255, 255, 100)
+   • Effet : Rayons autour des yeux (8 rayons)
+   • Comme des petits soleils ! ☀️
+
+3. 🔴 COLÈRE EN ROUGE (déjà présent)
+   • Touche : C
+   • Couleur : Rouge (255, 50, 50)
+   • Effet : Pulse en croix
+
+───────────────────────────────────────────────────────────────
+
+⏱️  RESET AUTOMATIQUE
+═══════════════════════════════════════════════════════════════
+
+Après chaque émotion, le robot revient automatiquement
+à l'état NORMAL après 3 secondes !
+
+Comment ça marche :
+   1. Appuyez sur une touche (L, C, D, T, P, R)
+   2. L'émotion s'affiche
+   3. Attendez 3 secondes
+   4. ➡️ Reset automatique vers Normal
+   5. Message dans la console
+
+Pour annuler le reset :
+   • Appuyez sur 0 (zéro) pour rester en Normal
+   • Ou appuyez sur une autre émotion
+
+───────────────────────────────────────────────────────────────
+
+🧪 MODE TEST AUTOMATIQUE
+═══════════════════════════════════════════════════════════════
+
+Touche : M
+
+Active un mode qui teste TOUTES les émotions automatiquement !
+
+Séquence de test (2 secondes chacune) :
+   1. 💛 Sourire (jaune avec rayons)
+   2. 🔴 Colère (rouge qui pulse)
+   3. 💚 Dégoût (vert avec arcs)
+   4. 💙 Tristesse (bleu)
+   5. 💧 Pleurs (bleu avec larmes)
+   6. 😂 Rigolade (bleu qui tremble)
+   7. 😐 Normal (bleu)
+   → Recommence en boucle
+
+Utilisation :
+   • Appuyez sur M pour activer
+   • Le texte devient VERT en bas
+   • Chaque émotion s'affiche 2 secondes
+   • Appuyez à nouveau sur M pour désactiver
+
+Parfait pour :
+   ✅ Tester toutes les émotions rapidement
+   ✅ Vérifier que tout fonctionne
+   ✅ Démonstration automatique
+   ✅ Validation du robot
+
+───────────────────────────────────────────────────────────────
+
+🎮 NOUVELLES TOUCHES
+═══════════════════════════════════════════════════════════════
+
+ÉMOTIONS :
+   L  → 💛 Sourire (JAUNE avec rayons) ⭐ NOUVEAU !
+   C  → 🔴 Colère (rouge qui pulse)
+   D  → 💚 Dégoût (VERT avec arcs) ⭐ NOUVEAU !
+   T  → 💙 Tristesse (bleu)
+   P  → 💧 Pleurs (bleu avec larmes)
+   R  → 😂 Rigolade (bleu qui tremble)
+   0  → 😐 Normal (bleu)
+
+CONTRÔLES :
+   O  → Ouvrir les yeux
+   F  → Fermer les yeux
+   B  → Cligner
+
+SPÉCIAL :
+   M  → Mode Test (ON/OFF) ⭐ NOUVEAU !
+   ESC → Quitter
+
+───────────────────────────────────────────────────────────────
+
+💛 DÉTAILS DU SOURIRE (Touche L)
+═══════════════════════════════════════════════════════════════
+
+Apparence :
+   • Yeux JAUNES (comme des soleils)
+   • 8 rayons autour de chaque œil
+   • Rayons de 2 pixels d'épaisseur
+   • Distribués à 360° autour de l'œil
+
+Effet visuel :
+   ┌─────────┐
+   │  \ | /  │
+   │ ─ ● ─   │  ← Œil jaune avec rayons
+   │  / | \  │
+   └─────────┘
+
+Parfait pour :
+   • Exprimer la joie
+   • Ambiance positive
+   • Très visible et joyeux !
+
+───────────────────────────────────────────────────────────────
+
+💚 DÉTAILS DU DÉGOÛT (Touche D)
+═══════════════════════════════════════════════════════════════
+
+Apparence :
+   • Yeux VERTS
+   • Arcs courbés vers le bas
+   • 2 arcs superposés pour l'effet
+   • Donne l'impression de "beurk"
+
+Effet visuel :
+   ┌─────────┐
+   │    ●    │  ← Œil vert
+   │   ︶︶   │  ← Arcs vers le bas
+   └─────────┘
+
+Parfait pour :
+   • Exprimer le dégoût
+   • Réaction négative
+   • Très expressif !
+
+───────────────────────────────────────────────────────────────
+
+📊 PALETTE DE COULEURS COMPLÈTE
+═══════════════════════════════════════════════════════════════
+
+💛 Sourire (L)    : RGB(255, 255, 100) - Jaune soleil
+🔴 Colère (C)     : RGB(255, 50, 50)   - Rouge vif
+💚 Dégoût (D)     : RGB(100, 255, 100) - Vert clair
+💙 Autres         : RGB(120, 200, 255) - Bleu brillant
+
+───────────────────────────────────────────────────────────────
+
+🧪 UTILISATION DU MODE TEST
+═══════════════════════════════════════════════════════════════
+
+Scénario 1 : Validation rapide
+   1. Lancez le robot
+   2. Appuyez sur M
+   3. Observez toutes les émotions
+   4. Vérifiez que tout fonctionne
+   5. Appuyez sur M pour arrêter
+
+Scénario 2 : Démonstration
+   1. Activez le mode test (M)
+   2. Laissez tourner en boucle
+   3. Les gens voient toutes les émotions
+   4. Parfait pour présenter le robot !
+
+Scénario 3 : Développement
+   1. Modifiez le code
+   2. Lancez le mode test
+   3. Vérifiez rapidement les changements
+   4. Pas besoin d'appuyer sur chaque touche !
+
+───────────────────────────────────────────────────────────────
+
+⏱️  TIMELINE DU RESET AUTOMATIQUE
+═══════════════════════════════════════════════════════════════
+
+0s  → Vous appuyez sur L (sourire)
+      💛 Yeux jaunes avec rayons
+
+1s  → L'émotion est toujours affichée
+      💛 Toujours sourire
+
+2s  → L'émotion est toujours affichée
+      💛 Toujours sourire
+
+3s  → ➡️ RESET AUTOMATIQUE
+      💙 Retour à Normal (bleu)
+      Message dans la console
+
+───────────────────────────────────────────────────────────────
+
+🎯 TESTEZ MAINTENANT !
+═══════════════════════════════════════════════════════════════
+
+1. Lancez : ./run_robot.sh eve-pro
+
+2. Testez le sourire jaune :
+   • Appuyez sur L
+   • Voyez les yeux JAUNES avec rayons ☀️
+   • Attendez 3 secondes → reset auto
+
+3. Testez le dégoût vert :
+   • Appuyez sur D
+   • Voyez les yeux VERTS avec arcs
+   • Attendez 3 secondes → reset auto
+
+4. Testez le mode test :
+   • Appuyez sur M
+   • Regardez toutes les émotions défiler
+   • Appuyez sur M pour arrêter
+
+───────────────────────────────────────────────────────────────
+
+💡 ASTUCES
+═══════════════════════════════════════════════════════════════
+
+• Le mode test désactive le reset automatique
+• Appuyez sur 0 pour annuler le reset
+• Le texte devient VERT quand le mode test est actif
+• Chaque émotion est affichée dans la console
+
+───────────────────────────────────────────────────────────────
+
+Profitez des nouvelles fonctionnalités ! 💛💚🔴✨

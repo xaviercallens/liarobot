@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Agent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">AMCP Core</a> &gt; <a href="index.source.html" class="el_package">org.amcp.core</a> &gt; <span class="el_source">Agent.java</span></div><h1>Agent.java</h1><pre class="source lang-java linenums">package org.amcp.core;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ * Base class for all AMCP agents.
+ * 
+ * Provides core functionality for agent lifecycle management,
+ * event handling, and communication within the agent mesh.
+ * 
+ * @author AMCP Development Team
+ * @version 1.5.0
+ * @since 1.0.0
+ */
+public abstract class Agent {
+    
+<span class="fc" id="L24">    private static final Logger logger = LoggerFactory.getLogger(Agent.class);</span>
+<span class="fc" id="L25">    private static final ObjectMapper objectMapper = new ObjectMapper();</span>
+    
+    private final String agentId;
+    private final String agentType;
+    private final Map&lt;String, Object&gt; metadata;
+    private final List&lt;String&gt; subscriptions;
+    private final Map&lt;String, String&gt; capabilities;
+    
+    private AgentState state;
+    private AgentContext context;
+    private Instant activationTime;
+    private Instant lastActivityTime;
+    
+    /**
+     * Creates a new agent with the specified ID and type.
+     * 
+     * @param agentId unique identifier for this agent
+     * @param agentType the type/class of this agent
+     */
+<span class="fc" id="L44">    protected Agent(String agentId, String agentType) {</span>
+<span class="fc" id="L45">        this.agentId = Objects.requireNonNull(agentId, &quot;Agent ID cannot be null&quot;);</span>
+<span class="fc" id="L46">        this.agentType = Objects.requireNonNull(agentType, &quot;Agent type cannot be null&quot;);</span>
+<span class="fc" id="L47">        this.metadata = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L48">        this.subscriptions = new CopyOnWriteArrayList&lt;&gt;();</span>
+<span class="fc" id="L49">        this.capabilities = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L50">        this.state = AgentState.CREATED;</span>
+        
+<span class="fc" id="L52">        logger.info(&quot;Agent created: {} [{}]&quot;, agentId, agentType);</span>
+<span class="fc" id="L53">    }</span>
+    
+    /**
+     * Gets the unique identifier for this agent.
+     * 
+     * @return the agent ID
+     */
+    public final String getAgentId() {
+<span class="nc" id="L61">        return agentId;</span>
+    }
+    
+    /**
+     * Gets the type of this agent.
+     * 
+     * @return the agent type
+     */
+    public final String getAgentType() {
+<span class="nc" id="L70">        return agentType;</span>
+    }
+    
+    /**
+     * Gets the current state of this agent.
+     * 
+     * @return the agent state
+     */
+    public final AgentState getState() {
+<span class="fc" id="L79">        return state;</span>
+    }
+    
+    /**
+     * Gets the agent context for mesh communication.
+     * 
+     * @return the agent context
+     */
+    protected final AgentContext getContext() {
+<span class="nc" id="L88">        return context;</span>
+    }
+    
+    /**
+     * Sets the agent context. Called by the AMCP framework.
+     * 
+     * @param context the agent context
+     */
+    public final void setContext(AgentContext context) {
+<span class="fc" id="L97">        this.context = context;</span>
+<span class="fc" id="L98">    }</span>
+    
+    /**
+     * Activates this agent within the mesh.
+     * 
+     * This method is called by the AMCP framework when the agent
+     * is being activated. Subclasses should override {@link #onActivation()}
+     * to perform custom initialization.
+     */
+    public final void activate() {
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (state != AgentState.CREATED) {</span>
+<span class="nc" id="L109">            throw new IllegalStateException(&quot;Agent can only be activated from CREATED state&quot;);</span>
+        }
+        
+<span class="fc" id="L112">        state = AgentState.ACTIVATING;</span>
+<span class="fc" id="L113">        activationTime = Instant.now();</span>
+<span class="fc" id="L114">        lastActivityTime = activationTime;</span>
+        
+        try {
+<span class="fc" id="L117">            onActivation();</span>
+<span class="fc" id="L118">            state = AgentState.ACTIVE;</span>
+<span class="fc" id="L119">            logger.info(&quot;Agent activated: {} [{}]&quot;, agentId, agentType);</span>
+<span class="nc" id="L120">        } catch (Exception e) {</span>
+<span class="nc" id="L121">            state = AgentState.ERROR;</span>
+<span class="nc" id="L122">            logger.error(&quot;Failed to activate agent: {} [{}]&quot;, agentId, agentType, e);</span>
+<span class="nc" id="L123">            throw new AgentActivationException(&quot;Failed to activate agent: &quot; + agentId, e);</span>
+<span class="fc" id="L124">        }</span>
+<span class="fc" id="L125">    }</span>
+    
+    /**
+     * Deactivates this agent from the mesh.
+     * 
+     * This method is called by the AMCP framework when the agent
+     * is being deactivated. Subclasses should override {@link #onDeactivation()}
+     * to perform custom cleanup.
+     */
+    public final void deactivate() {
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (state != AgentState.ACTIVE) {</span>
+<span class="nc" id="L136">            logger.warn(&quot;Attempting to deactivate agent in state: {}&quot;, state);</span>
+        }
+        
+<span class="fc" id="L139">        state = AgentState.DEACTIVATING;</span>
+        
+        try {
+<span class="fc" id="L142">            onDeactivation();</span>
+<span class="fc" id="L143">            state = AgentState.DEACTIVATED;</span>
+<span class="fc" id="L144">            logger.info(&quot;Agent deactivated: {} [{}]&quot;, agentId, agentType);</span>
+<span class="nc" id="L145">        } catch (Exception e) {</span>
+<span class="nc" id="L146">            state = AgentState.ERROR;</span>
+<span class="nc" id="L147">            logger.error(&quot;Failed to deactivate agent: {} [{}]&quot;, agentId, agentType, e);</span>
+<span class="nc" id="L148">            throw new AgentDeactivationException(&quot;Failed to deactivate agent: &quot; + agentId, e);</span>
+<span class="fc" id="L149">        }</span>
+<span class="fc" id="L150">    }</span>
+    
+    /**
+     * Called when the agent is being activated.
+     * 
+     * Subclasses should override this method to perform custom
+     * initialization such as subscribing to topics and announcing
+     * capabilities.
+     */
+    protected void onActivation() {
+        // Default implementation does nothing
+<span class="nc" id="L161">    }</span>
+    
+    /**
+     * Called when the agent is being deactivated.
+     * 
+     * Subclasses should override this method to perform custom
+     * cleanup such as unsubscribing from topics and releasing
+     * resources.
+     */
+    protected void onDeactivation() {
+        // Default implementation does nothing
+<span class="fc" id="L172">    }</span>
+    
+    /**
+     * Subscribes to events on the specified topic.
+     * 
+     * @param topic the topic to subscribe to (supports wildcards)
+     */
+    protected final void subscribe(String topic) {
+<span class="fc" id="L180">        Objects.requireNonNull(topic, &quot;Topic cannot be null&quot;);</span>
+        
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        if (!subscriptions.contains(topic)) {</span>
+<span class="fc" id="L183">            subscriptions.add(topic);</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">            if (context != null) {</span>
+<span class="fc" id="L185">                context.subscribe(this, topic);</span>
+            }
+<span class="fc" id="L187">            logger.debug(&quot;Agent {} subscribed to topic: {}&quot;, agentId, topic);</span>
+        }
+<span class="fc" id="L189">    }</span>
+    
+    /**
+     * Unsubscribes from events on the specified topic.
+     * 
+     * @param topic the topic to unsubscribe from
+     */
+    protected final void unsubscribe(String topic) {
+<span class="nc" id="L197">        Objects.requireNonNull(topic, &quot;Topic cannot be null&quot;);</span>
+        
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (subscriptions.remove(topic)) {</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            if (context != null) {</span>
+<span class="nc" id="L201">                context.unsubscribe(this, topic);</span>
+            }
+<span class="nc" id="L203">            logger.debug(&quot;Agent {} unsubscribed from topic: {}&quot;, agentId, topic);</span>
+        }
+<span class="nc" id="L205">    }</span>
+    
+    /**
+     * Publishes an event to the mesh.
+     * 
+     * @param event the event to publish
+     */
+    public final void publish(Event event) {
+<span class="fc" id="L213">        Objects.requireNonNull(event, &quot;Event cannot be null&quot;);</span>
+        
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">        if (context == null) {</span>
+<span class="nc" id="L216">            throw new IllegalStateException(&quot;Agent context not set&quot;);</span>
+        }
+        
+        // Set sender if not already set
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if (event.getSender() == null) {</span>
+<span class="fc" id="L221">            event = event.toBuilder().sender(agentId).build();</span>
+        }
+        
+<span class="fc" id="L224">        context.publish(event);</span>
+<span class="fc" id="L225">        lastActivityTime = Instant.now();</span>
+        
+<span class="fc" id="L227">        logger.debug(&quot;Agent {} published event to topic: {}&quot;, agentId, event.getTopic());</span>
+<span class="fc" id="L228">    }</span>
+    
+    /**
+     * Announces a capability of this agent.
+     * 
+     * @param capability the capability name
+     * @param version the capability version
+     */
+    protected final void announceCapability(String capability, String version) {
+<span class="fc" id="L237">        Objects.requireNonNull(capability, &quot;Capability cannot be null&quot;);</span>
+<span class="fc" id="L238">        Objects.requireNonNull(version, &quot;Version cannot be null&quot;);</span>
+        
+<span class="fc" id="L240">        capabilities.put(capability, version);</span>
+        
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">        if (context != null) {</span>
+<span class="fc" id="L243">            Event capabilityEvent = Event.builder()</span>
+<span class="fc" id="L244">                .topic(&quot;system.capability.announce&quot;)</span>
+<span class="fc" id="L245">                .payload(Map.of(</span>
+                    &quot;agentId&quot;, agentId,
+                    &quot;capability&quot;, capability,
+                    &quot;version&quot;, version
+                ))
+<span class="fc" id="L250">                .sender(agentId)</span>
+<span class="fc" id="L251">                .build();</span>
+                
+<span class="fc" id="L253">            context.publish(capabilityEvent);</span>
+        }
+        
+<span class="fc" id="L256">        logger.debug(&quot;Agent {} announced capability: {} v{}&quot;, agentId, capability, version);</span>
+<span class="fc" id="L257">    }</span>
+    
+    /**
+     * Logs a message with the agent ID as context.
+     * 
+     * @param message the message to log
+     */
+    protected final void log(String message) {
+<span class="nc" id="L265">        logger.info(&quot;[{}] {}&quot;, agentId, message);</span>
+<span class="nc" id="L266">    }</span>
+    
+    /**
+     * Logs a message with arguments and the agent ID as context.
+     * 
+     * @param message the message template
+     * @param args the message arguments
+     */
+    protected final void log(String message, Object... args) {
+<span class="nc" id="L275">        logger.info(&quot;[{}] &quot; + message, agentId, args);</span>
+<span class="nc" id="L276">    }</span>
+    
+    /**
+     * Gets the agent's metadata.
+     * 
+     * @return a copy of the metadata map
+     */
+    public final Map&lt;String, Object&gt; getMetadata() {
+<span class="fc" id="L284">        return new HashMap&lt;&gt;(metadata);</span>
+    }
+    
+    /**
+     * Sets a metadata value.
+     * 
+     * @param key the metadata key
+     * @param value the metadata value
+     */
+    protected final void setMetadata(String key, Object value) {
+<span class="fc" id="L294">        metadata.put(key, value);</span>
+<span class="fc" id="L295">    }</span>
+    
+    /**
+     * Gets the agent's subscriptions.
+     * 
+     * @return a copy of the subscriptions list
+     */
+    public final List&lt;String&gt; getSubscriptions() {
+<span class="fc" id="L303">        return new ArrayList&lt;&gt;(subscriptions);</span>
+    }
+    
+    /**
+     * Gets the agent's capabilities.
+     * 
+     * @return a copy of the capabilities map
+     */
+    public final Map&lt;String, String&gt; getCapabilities() {
+<span class="fc" id="L312">        return new HashMap&lt;&gt;(capabilities);</span>
+    }
+    
+    /**
+     * Gets the time when this agent was activated.
+     * 
+     * @return the activation time, or null if not activated
+     */
+    public final Instant getActivationTime() {
+<span class="fc" id="L321">        return activationTime;</span>
+    }
+    
+    /**
+     * Gets the time of the last activity (event published).
+     * 
+     * @return the last activity time
+     */
+    public final Instant getLastActivityTime() {
+<span class="nc" id="L330">        return lastActivityTime;</span>
+    }
+    
+    /**
+     * Handles an incoming event. Called by the AMCP framework.
+     * 
+     * @param event the event to handle
+     */
+    public final void handleEvent(Event event) {
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">        if (state != AgentState.ACTIVE) {</span>
+<span class="nc" id="L340">            logger.warn(&quot;Agent {} received event while not active: {}&quot;, agentId, state);</span>
+<span class="nc" id="L341">            return;</span>
+        }
+        
+<span class="fc" id="L344">        lastActivityTime = Instant.now();</span>
+        
+        try {
+<span class="fc" id="L347">            onEventReceived(event);</span>
+<span class="nc" id="L348">        } catch (Exception e) {</span>
+<span class="nc" id="L349">            logger.error(&quot;Error handling event in agent {}: {}&quot;, agentId, e.getMessage(), e);</span>
+<span class="fc" id="L350">        }</span>
+<span class="fc" id="L351">    }</span>
+    
+    /**
+     * Called when an event is received by this agent.
+     * 
+     * Subclasses should override this method to handle incoming events.
+     * 
+     * @param event the received event
+     */
+    protected void onEventReceived(Event event) {
+        // Default implementation does nothing
+<span class="nc" id="L362">    }</span>
+    
+    /**
+     * Convenience method to get agent ID (alias for getAgentId).
+     * 
+     * @return the agent ID
+     */
+    public final String getId() {
+<span class="fc" id="L370">        return agentId;</span>
+    }
+    
+    /**
+     * Convenience method to get agent type (alias for getAgentType).
+     * 
+     * @return the agent type
+     */
+    public final String getType() {
+<span class="fc" id="L379">        return agentType;</span>
+    }
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L384">        return String.format(&quot;Agent{id='%s', type='%s', state=%s}&quot;, </span>
+            agentId, agentType, state);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L390" title="1 of 2 branches missed.">        if (this == obj) return true;</span>
+<span class="pc bpc" id="L391" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) return false;</span>
+<span class="fc" id="L392">        Agent agent = (Agent) obj;</span>
+<span class="fc" id="L393">        return Objects.equals(agentId, agent.agentId);</span>
+    }
+    
+    @Override
+    public int hashCode() {
+<span class="fc" id="L398">        return Objects.hash(agentId);</span>
+    }
+}
+
+/**
+ * Enumeration of agent states.
+ */
+<span class="fc" id="L405">enum AgentState {</span>
+<span class="fc" id="L406">    CREATED,</span>
+<span class="fc" id="L407">    ACTIVATING,</span>
+<span class="fc" id="L408">    ACTIVE,</span>
+<span class="fc" id="L409">    DEACTIVATING,</span>
+<span class="fc" id="L410">    DEACTIVATED,</span>
+<span class="fc" id="L411">    ERROR</span>
+}
+
+/**
+ * Exception thrown when agent activation fails.
+ */
+class AgentActivationException extends RuntimeException {
+    public AgentActivationException(String message, Throwable cause) {
+<span class="nc" id="L419">        super(message, cause);</span>
+<span class="nc" id="L420">    }</span>
+}
+
+/**
+ * Exception thrown when agent deactivation fails.
+ */
+class AgentDeactivationException extends RuntimeException {
+    public AgentDeactivationException(String message, Throwable cause) {
+<span class="nc" id="L428">        super(message, cause);</span>
+<span class="nc" id="L429">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
