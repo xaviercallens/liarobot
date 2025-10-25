@@ -1,0 +1,150 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║          🤖 PROJET ROBOT ÉDUCATIF - COMMENCEZ ICI 🤖         ║
+║                                                              ║
+║              Pour apprendre avec votre enfant !              ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 ÉTAPES RAPIDES (10 minutes)
+═══════════════════════════════════════════════════════════════
+
+1️⃣  INSTALLER LES DÉPENDANCES
+   
+   Sur Linux/Mac :
+   ./install.sh
+   
+   Sur Windows :
+   install.bat
+   
+   Ou manuellement :
+   pip install pygame numpy
+
+───────────────────────────────────────────────────────────────
+
+2️⃣  LANCER LE PROGRAMME PRINCIPAL
+   
+   Méthode 1 (Recommandée) :
+   ./run_robot.sh              # Linux/Mac
+   python3 run_robot.py        # Tous systèmes
+   
+   Méthode 2 (Directe) :
+   .venv/bin/python robot_smile.py    # Si vous avez un venv
+   python3 robot_smile.py             # Linux/Mac
+   python robot_smile.py              # Windows
+
+───────────────────────────────────────────────────────────────
+
+3️⃣  INTERAGIR AVEC LE ROBOT
+   
+   ESPACE  →  Faire sourire le robot 😊
+   O       →  Ouvrir les yeux 👀
+   C       →  Fermer les yeux 😴
+   B       →  Cligner 😉
+   ESC     →  Quitter
+
+───────────────────────────────────────────────────────────────
+
+📚 DOCUMENTATION DISPONIBLE
+═══════════════════════════════════════════════════════════════
+
+📄 README.md              → Vue d'ensemble du projet
+📄 GUIDE_DEMARRAGE.md     → Guide détaillé pour démarrer
+📄 PROJET_COMPLET.md      → Documentation complète
+📄 EXERCICES.md           → Exercices progressifs
+📄 micropython/README.md  → Version robot réel
+
+───────────────────────────────────────────────────────────────
+
+🎮 PROGRAMMES DISPONIBLES
+═══════════════════════════════════════════════════════════════
+
+⭐ robot_smile.py           → Programme principal (COMMENCEZ ICI)
+   examples/emotions.py     → Démonstration des émotions
+   examples/interactive.py  → Contrôle complet au clavier
+   micropython/main.py      → Version pour robot réel
+
+───────────────────────────────────────────────────────────────
+
+🎯 PARCOURS D'APPRENTISSAGE
+═══════════════════════════════════════════════════════════════
+
+JOUR 1-2 : Découverte
+  ✓ Installer et lancer robot_smile.py
+  ✓ Tester toutes les touches
+  ✓ Observer les animations
+
+JOUR 3-5 : Exploration
+  ✓ Lancer examples/emotions.py
+  ✓ Essayer examples/interactive.py
+  ✓ Lire le code avec les commentaires
+
+SEMAINE 2 : Modification
+  ✓ Ouvrir EXERCICES.md
+  ✓ Faire les exercices débutants
+  ✓ Personnaliser le robot
+
+SEMAINE 3+ : Création
+  ✓ Créer ses propres programmes
+  ✓ Assembler le robot réel (optionnel)
+  ✓ Inventer de nouvelles fonctionnalités
+
+───────────────────────────────────────────────────────────────
+
+🛠️  MATÉRIEL POUR ROBOT RÉEL (optionnel)
+═══════════════════════════════════════════════════════════════
+
+Pour créer un vrai robot physique :
+
+  • Raspberry Pi Pico ou ESP32        (~5-8€)
+  • Écran OLED I2C 128x64 (SSD1306)   (~10€)
+  • Câbles de connexion                (~3€)
+  • Batterie USB (optionnel)           (~10€)
+
+  📖 Voir micropython/README.md pour les détails
+
+───────────────────────────────────────────────────────────────
+
+❓ BESOIN D'AIDE ?
+═══════════════════════════════════════════════════════════════
+
+Problème                          Solution
+────────────────────────────────────────────────────────────
+Module pygame introuvable    →   pip install pygame
+python: command not found    →   Utilisez python3
+L'écran reste noir           →   Appuyez sur 'O'
+Le robot ne cligne pas       →   Attendez ou appuyez sur 'B'
+
+───────────────────────────────────────────────────────────────
+
+🎓 COMPÉTENCES APPRISES
+═══════════════════════════════════════════════════════════════
+
+  ✓ Programmation Python (variables, fonctions, boucles)
+  ✓ Graphiques et animations
+  ✓ Gestion d'événements (clavier)
+  ✓ Logique et débogage
+  ✓ Électronique de base (version matérielle)
+
+───────────────────────────────────────────────────────────────
+
+💡 PROJET BASÉ SUR
+═══════════════════════════════════════════════════════════════
+
+  micropython-roboeyes par MCHobby
+  https://github.com/mchobby/micropython-roboeyes
+  
+  Adapté et simplifié pour l'apprentissage
+
+───────────────────────────────────────────────────────────────
+
+🚀 PRÊT À COMMENCER ?
+═══════════════════════════════════════════════════════════════
+
+1. Ouvrez un terminal dans ce dossier
+2. Tapez : python3 robot_smile.py
+3. Amusez-vous ! 🎉
+
+───────────────────────────────────────────────────────────────
+
+Bon apprentissage ! 🤖❤️

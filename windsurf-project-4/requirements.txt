@@ -1,0 +1,5 @@
+pygame==2.5.2
+numpy==1.26.0
+# Pour la version MicroPython (à installer sur le microcontrôleur)
+# micropython-ssd1306
+# micropython-fbutil

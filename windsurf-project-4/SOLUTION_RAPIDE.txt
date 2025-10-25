@@ -1,0 +1,96 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║     ✅ SOLUTION À L'ERREUR "python: command not found"      ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+🎯 SOLUTION RAPIDE (Copier-Coller)
+═══════════════════════════════════════════════════════════════
+
+Au lieu de :
+   python robot_eye.py          ❌ NE MARCHE PAS
+
+Utilisez :
+   ./run_robot.sh               ✅ FONCTIONNE !
+
+Ou :
+   python3 run_robot.py         ✅ FONCTIONNE !
+
+Ou :
+   .venv/bin/python robot_smile.py    ✅ FONCTIONNE !
+
+───────────────────────────────────────────────────────────────
+
+📋 COMMANDES DISPONIBLES
+═══════════════════════════════════════════════════════════════
+
+Programme principal (sourire Cozmo) :
+   ./run_robot.sh
+   ./run_robot.sh smile
+   python3 run_robot.py smile
+
+Démonstration des émotions :
+   ./run_robot.sh emotions
+   python3 run_robot.py emotions
+
+Contrôle interactif complet :
+   ./run_robot.sh interactive
+   python3 run_robot.py interactive
+
+Robot eye simple :
+   ./run_robot.sh eye
+   python3 run_robot.py eye
+
+───────────────────────────────────────────────────────────────
+
+❓ POURQUOI CETTE ERREUR ?
+═══════════════════════════════════════════════════════════════
+
+Sur Linux/Mac, Python 3 s'appelle "python3" et non "python"
+
+La commande "python" n'existe pas par défaut sur votre système
+
+Les scripts run_robot.sh et run_robot.py détectent automatiquement
+la bonne commande à utiliser
+
+───────────────────────────────────────────────────────────────
+
+🔧 AUTRES SOLUTIONS
+═══════════════════════════════════════════════════════════════
+
+Solution 1 : Utiliser python3 directement
+   python3 robot_smile.py
+   python3 examples/emotions.py
+   python3 examples/interactive.py
+
+Solution 2 : Utiliser l'environnement virtuel
+   .venv/bin/python robot_smile.py
+
+Solution 3 : Créer un alias (permanent)
+   echo "alias python=python3" >> ~/.bashrc
+   source ~/.bashrc
+
+───────────────────────────────────────────────────────────────
+
+✅ VÉRIFICATION
+═══════════════════════════════════════════════════════════════
+
+Pour vérifier que Python est installé :
+   python3 --version
+
+Pour vérifier que pygame est installé :
+   python3 -c "import pygame; print('OK')"
+
+Pour réinstaller les dépendances :
+   .venv/bin/python -m pip install -r requirements.txt
+
+───────────────────────────────────────────────────────────────
+
+📚 DOCUMENTATION COMPLÈTE
+═══════════════════════════════════════════════════════════════
+
+Voir LANCEMENT.md pour plus de détails
+
+───────────────────────────────────────────────────────────────
+
+Bonne programmation ! 🤖
